@@ -1,41 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using CorEscuela.Entidades;
-using static System.Console; //Permite escribit soo writeLine, por ejemplo.
-using CorEscuela.Util;
+using CoreEscuela.Entidades;
+using CoreEscuela.Util;
+using static System.Console;
 
-namespace CorEscuela
+namespace CoreEscuela
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var engine=new EscuelaEngine();
+            var engine = new EscuelaEngine();
             engine.Inicializar();
-            Printer.Beep(5800,500);
-            Printer.WriteTitle("Bienvenidos a la escuela");
-            ImprimirCursosEscuela(engine.escuela);
-           
+            Printer.WriteTitle("BIENVENIDOS A LA ESCUELA");
+            //Printer.Beep(10000, cantidad: 10);
+            ImpimirCursosEscuela(engine.Escuela);
+            var listaObjetos = engine.GetObjetosEscuela();
         }
 
-        //Susar 3 "/" en 3 renglones se usa como comentario y permite XML
-        ///<SUMARY>
-        ///Esto permite conocer el programa y se usa para software
-        ///a nivel profesional
-        private static void ImprimirCursosEscuela(Escuela e)
+        private static void ImpimirCursosEscuela(Escuela escuela)
         {
-            WriteLine("==========================");
-            WriteLine("Cursos de la escuela");
-            WriteLine("==========================");
-            if(e?.Cursos!=null)//No se verifica salvo que e sea diferente de null
-            foreach (var curso in e.Cursos)
+
+            Printer.WriteTitle("Cursos de la Escuela");
+
+
+            if (escuela?.Cursos != null)
             {
+                foreach (var curso in escuela.Cursos)
                 {
-                    WriteLine($"Nombre: {curso.Nombre}, ID: {curso.ID}, Jornada {curso.Jornada}");
+                    WriteLine($"Nombre {curso.Nombre  }, Id  {curso.UniqueId}");
                 }
-            }//Fin de for
-        }//Fin de metodo
-
-
-    }//Fin de la clase
+            }
+        }
+    }
 }

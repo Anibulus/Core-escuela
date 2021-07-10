@@ -1,38 +1,31 @@
+using System;
 using System.Collections.Generic;
 
-namespace CorEscuela.Entidades
+namespace CoreEscuela.Entidades
 {
-    public class Escuela
+    public class Escuela:ObjetoEscuelaBase
     {
-        //Características
-        string nombre;
-        public string Nombre{
-            get{ return nombre;}
-            set { nombre=value.ToUpper();}
-        }
+        public int AñoDeCreación { get; set; }
 
-        public int anioDeCreacion{get; set;}
         public string Pais { get; set; }
         public string Ciudad { get; set; }
-        public TiposEscuela tipoEscuela {get; set;}
+        public TiposEscuela TipoEscuela { get; set; }
         public List<Curso> Cursos { get; set; }
 
-        //Constructores
-        public Escuela(string nombre, int anio)=>(Nombre,anioDeCreacion)=(nombre,anio);
-        //Incluye parametros opcionales
-        public Escuela(string nombre, int anio,TiposEscuela tipoEscuela, string pais="", string ciudad="")
+        public Escuela(string nombre, int año) => (Nombre, AñoDeCreación) = (nombre, año);
+
+        public Escuela(string nombre, int año, 
+                       TiposEscuela tipo, 
+                       string pais = "", string ciudad = "") : base()
         {
-            (Nombre,anioDeCreacion)=(nombre,anio);
-            this.tipoEscuela=tipoEscuela;
-            Pais=pais;
-            Ciudad=ciudad;
+            (Nombre, AñoDeCreación) = (nombre, año);
+            Pais = pais;
+            Ciudad = ciudad;
         }
 
         public override string ToString()
         {
-            //{System.Environment.NewLine} es usado para linux, y \n para windows
-            return $"Nombre: \"{Nombre}\", Tipo: \"{tipoEscuela}\", {System.Environment.NewLine} Pais: \"{Pais}\", Ciudad: \"{Ciudad}\"";
+            return $"Nombre: \"{Nombre}\", Tipo: {TipoEscuela} {System.Environment.NewLine} Pais: {Pais}, Ciudad:{Ciudad}";
         }
-
-    }//Fin de escuela
-}//Fin de namespace
+    }
+}
