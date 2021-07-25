@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CoreEscuela.Entidades;
 using CoreEscuela.Util;
 using static System.Console;
@@ -16,6 +17,10 @@ namespace CoreEscuela
             //Printer.Beep(10000, cantidad: 10);
             ImpimirCursosEscuela(engine.Escuela);
             var listaObjetos = engine.GetObjetosEscuela();
+            engine.Escuela.LimpiarLugar();
+            var ListaILugar=(from obj in listaObjetos
+                where obj is ILugar
+                select (ILugar) obj);
         }
 
         private static void ImpimirCursosEscuela(Escuela escuela)
@@ -28,7 +33,7 @@ namespace CoreEscuela
             {
                 foreach (var curso in escuela.Cursos)
                 {
-                    WriteLine($"Nombre {curso.Nombre  }, Id  {curso.UniqueId}");
+                    WriteLine($"Nombre {curso.Nombre}, Id  {curso.UniqueId}");
                 }
             }
         }
