@@ -54,7 +54,52 @@ namespace CoreEscuela
 
         }
 
-        public List<ObjetoEscuelaBase> GetObjetosEscuela(
+        public void ImprimirDiccionario(Dictionary<LlaveDiccionario, IEnumerable<ObjetoEscuelaBase>> dic)
+        {
+            foreach(var obj in dic)
+            {
+                Console.WriteLine($"{obj.Key} {obj.Value}");
+                foreach(var keyValuePair in obj.Value){
+                    Console.WriteLine($"{keyValuePair.Nombre} {keyValuePair.UniqueId}");
+                }
+            }
+        }
+        //Se pide <llave, contenido>
+        //IEnumerable se utiliza porque Es una interfaz generica de lista
+        public Dictionary<LlaveDiccionario, IEnumerable<ObjetoEscuelaBase>> GetDiccionarioObjetos(){
+            var diccionario=new Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>>();
+            
+            #region Ejemplo de casteo con IEnumerable
+            IEnumerable<ObjetoEscuelaBase> o=new List<ObjetoEscuelaBase>();
+            List<Curso> c=new List<Curso>();
+
+            o=c.Cast<ObjetoEscuelaBase>();
+            #endregion
+
+            diccionario.Add(LlaveDiccionario.Escuela, new[] {Escuela});
+            diccionario.Add(LlaveDiccionario.Cursos,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
+            
+            var listaTemp=new List<Evaluación>();
+            var listaTempAsig=new List<Asignatura>();
+            var listaTempAlu=new List<Alumno>();
+
+            foreach(var item in Escuela.Cursos)
+            {
+                listaTempAsig.AddRange(item.Asignaturas);
+                listaTempAlu.AddRange(item.Alumnos);
+                
+                foreach(var alum in item.Alumnos)
+                {
+                    listaTemp.AddRange(alum.Evaluaciones);                    
+                }
+            }
+            diccionario.Add(LlaveDiccionario.Alumnos,listaTempAlu.Cast<ObjetoEscuelaBase>());
+            diccionario.Add(LlaveDiccionario.Asignaturas,listaTempAsig.Cast<ObjetoEscuelaBase>());
+            diccionario.Add(LlaveDiccionario.Evaluacion,
+                                listaTemp.Cast<ObjetoEscuelaBase>());
+            return diccionario;
+        }
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(
             bool traerEvaluaciones=true,
             bool traerAlumnos=true,
             bool traerAsignaturas=true,
@@ -64,7 +109,7 @@ namespace CoreEscuela
             return GetObjetosEscuela(out int dummy, out dummy, out dummy, out dummy);
         }     
 
-        public List<ObjetoEscuelaBase> GetObjetosEscuela(
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(
             out int conteoEvaluaciones,
             bool traerEvaluaciones=true,
             bool traerAlumnos=true,
@@ -75,7 +120,7 @@ namespace CoreEscuela
             return GetObjetosEscuela(out conteoEvaluaciones, out int dummy, out dummy, out dummy);
         }   
 
-        public List<ObjetoEscuelaBase> GetObjetosEscuela(            
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(            
             out int conteoEvaluaciones,
             out int conteoCursos,
             out int conteoAsignaturas,
@@ -114,7 +159,7 @@ namespace CoreEscuela
                     }                
             }
 
-            return listaObj;
+            return listaObj.AsReadOnly();
         }
 
         private void CargarAsignaturas()

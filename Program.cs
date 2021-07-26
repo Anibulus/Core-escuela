@@ -16,6 +16,30 @@ namespace CoreEscuela
             Printer.WriteTitle("BIENVENIDOS A LA ESCUELA");
             //Printer.Beep(10000, cantidad: 10);
             ImpimirCursosEscuela(engine.Escuela);
+            
+            
+            #region uso de diccionario
+            Dictionary<int, string> diccionario=new Dictionary<int, string>();
+            diccionario.Add(10,"Pepelepu");
+            diccionario.Add(23,"Lorem Ipsum");
+            diccionario[0]="Peter Peter";
+            WriteLine(diccionario[0]);
+            foreach(var keyValuePair in diccionario)
+            {
+                WriteLine($"Key: {keyValuePair.Key} Valor: {keyValuePair.Value}");
+            }
+            Printer.WriteTitle("Acceso a diccionario");
+            WriteLine(diccionario[23]);
+
+            Printer.WriteTitle("Otro diccionario");
+            Dictionary<string, string> dic=new Dictionary<string, string>();
+            dic["Luna"]="Cuerpo celeste que gira alrededor de la tierra";
+            WriteLine(dic["Luna"]);
+
+            var dicc=engine.GetDiccionarioObjetos();
+            engine.ImprimirDiccionario(dicc);
+            #endregion
+            #region uso de parametros de salida con linq
             var listaObjetos = engine.GetObjetosEscuela(
                 out int conteoEvaluaciones,
             out int conteoCursos,
@@ -35,6 +59,7 @@ namespace CoreEscuela
                 where obj is ILugar
                 select (ILugar) obj);
             */
+            #endregion
         }
 
         private static void ImpimirCursosEscuela(Escuela escuela)
